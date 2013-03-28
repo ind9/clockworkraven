@@ -49,6 +49,9 @@ ClockworkRaven::Application.routes.draw do
     end
   end
 
+  ## templates test
+  get "template" => "templates#index"
+
   # login routes
   get "login" => "logins#login"
   post "login" => "logins#persist_login"

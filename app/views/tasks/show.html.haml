@@ -16,6 +16,8 @@
   -# This hidden field is for MTurk -- it gets populated by the
   -# turkSetAssignmentID() javascript call below
   %input{:type => 'hidden', :value => '', :name => 'assignmentId', :id => 'assignmentId'}
+  %input{:type => 'hidden', :value => '', :name => 'hitId', :id => 'hitId'}
+  %input{:type => 'hidden', :value => '', :name => 'workerId', :id => 'workerId'}
 
   - @task.evaluation.template.each do |section|
     .section
@@ -51,5 +53,7 @@
   %script{:language => 'Javascript'}
     :plain
       turkSetAssignmentID();
+      turkSetHitID();
+      turkSetWorkerID();
       $('#mturk_form').validate();
 

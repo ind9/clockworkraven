@@ -1,3 +1,10 @@
+:categorization:
+  :desc: Used for categorization tasks
+  :vars:
+    :URL:
+      :desc: the URL of the product
+    :Title:
+      :desc: the product title as found in the product page
 :query:
   :desc: Embedded Search Query
   :vars:

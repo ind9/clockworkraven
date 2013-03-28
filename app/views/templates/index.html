@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>indix Classification MTurk Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/css/bootstrap.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/chosen/0.9.12/chosen.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+        <h3> Help us categorize the below product: </h3>
+         <div>
+              <p> 
+                <strong> Product Title <strong> <br>
+                -- sample product title -- 
+              </p>
+              <em>Categories</em>
+              <br>        
+              <select data-placeholder="Choose categories as applicable (in the order of relevance)" class="chzn-select" multiple style="width:350px;" tabindex="4">
+                <option value=""></option> 
+                <option value="Apparel">Apparel</option> 
+                <option value="Shoes">Shoes</option> 
+                <option value="Jewelry">Jewelry</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Home">Home</option>
+                <option value="Baby Essentials">Baby Essentials</option>
+                <option value="Home Improvements">Home Improvements</option>
+                <option value="Home Improvements">Office Supplies</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+    </div>
+    <div id="product-page">
+      <iframe src="http://www.walgreens.com/store/c/pantene-pro-v-ultimate-10-shampoo/ID=prod6165614-product" height="750px" width="100%"></iframe>
+    </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/0.9.12/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+          $(".chzn-select").chosen();
+          $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    </script>
+  </body>
+</html>

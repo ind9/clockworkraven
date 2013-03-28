@@ -1,0 +1,39 @@
+!!!
+%html
+  %head
+    %title indix Classification MTurk Template
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    / Bootstrap
+    %link{:href => "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/css/bootstrap.css", :rel => "stylesheet"}/
+    %link{:href => "//cdnjs.cloudflare.com/ajax/libs/chosen/0.9.12/chosen.css", :rel => "stylesheet"}/
+  %body
+    .container
+      %h3 Help us categorize the below product:
+      %div
+        %p
+          %strong
+            Product Title
+            %strong
+              %br/
+              \-- sample product title --
+        %em Categories
+        %br/
+        %select.chzn-select{"data-placeholder" => "Choose categories as applicable (in the order of relevance)", :multiple => "", :style => "width:350px;", :tabindex => "4"}
+          %option{:value => ""}
+          %option{:value => "Apparel"} Apparel
+          %option{:value => "Shoes"} Shoes
+          %option{:value => "Jewelry"} Jewelry
+          %option{:value => "Electronics"} Electronics
+          %option{:value => "Home"} Home
+          %option{:value => "Baby Essentials"} Baby Essentials
+          %option{:value => "Home Improvements"} Home Improvements
+          %option{:value => "Home Improvements"} Office Supplies
+          %option{:value => "Others"} Others
+    #product-page
+      %iframe{:height => "750px", :src => "http://www.walgreens.com/store/c/pantene-pro-v-ultimate-10-shampoo/ID=prod6165614-product", :width => "100%"}
+    %script{:src => "//code.jquery.com/jquery.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/bootstrap.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/chosen/0.9.12/chosen.jquery.min.js"}
+    :javascript
+      $(".chzn-select").chosen();
+      $(".chzn-select-deselect").chosen({allow_single_deselect:true});

@@ -47,7 +47,7 @@ module Threading
               raise e
             rescue => e
               # for any other error, retry if we have retries left.
-              Rails.logger.warn("Got an error in thread pool. Retries: #{retries}.\n#{e.inspect}")
+              Rails.logger.warn("Got an error in thread pool. Retries: #{retries}.\n#{e.backtrace}")
               if retries > 1
                 retries -= 1
                 retry
