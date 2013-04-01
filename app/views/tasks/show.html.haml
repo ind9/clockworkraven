@@ -47,7 +47,7 @@
       - else
         = render :partial => "components/#{section[:type]}", :locals => {:data => resolve_data(section[:data], @task.data)}
 
-  %input.btn.btn-primary{:type => 'submit', :value => 'Submit', :id => 'submitButton'}
+  %input.btn.btn-primary{:type => 'submit', :value => 'FinishTask', :id => 'submitButton'}
 
   -# Set up MTurk hidden field and javascript validation
   %script{:language => 'Javascript'}

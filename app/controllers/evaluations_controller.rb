@@ -236,7 +236,10 @@ class EvaluationsController < ApplicationController
 
     # make a deep copy of params[:evaluation] to work on
     evaluation_params = Marshal.load(Marshal.dump(params[:evaluation]))
+    puts "Evaluation incoming params: #{params[:evaluation]}, marhsalled: #{evaluation_params}"
 
+    has_categorization = false
+    fr_hash = {}
     # gather all types of sections
     {
       'headers_attributes' => :_header,
@@ -257,6 +260,20 @@ class EvaluationsController < ApplicationController
             section[:data] = section[:data][section[:type]]
           end
 
+          if section[:type] == 'categorization'
+            # "1364787241336"=>{"_destroy"=>"false", "order"=>"2", "label"=>"One more FR", "required"=>"1"}
+            has_categorization = true
+            fr_hash = { 
+                Time.new.to_i => {
+                  "_destroy" => "false", 
+                  "order" => "0", 
+                  "label" => "categories", 
+                  "required" => "0"
+                }
+            }
+          end
+
+          puts "Section type (orig) #{type_id} & now #{section[:type]}, and its data: #{section[:data]}"
           if type_id == :_fr or type_id == :_mc
             # for fr and mc questions, filter out irrelevant items
             section.delete_if{|k, v| k.to_s != 'type' and k.to_s != 'order'}
@@ -268,6 +285,11 @@ class EvaluationsController < ApplicationController
       #   ^ remove sections that have been marked for deletion or are unselected templates
     end
 
+    if has_categorization
+      params[:evaluation][:fr_questions_attributes] = fr_hash
+    end
+
+    puts "Params after the hack: #{params}"
     # sort
     template.sort_by! {|section| section[:order].to_i}
 

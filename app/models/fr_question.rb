@@ -22,4 +22,13 @@ class FRQuestion < ActiveRecord::Base
 
   belongs_to :evaluation
   has_many :fr_question_responses, :dependent => :destroy
+
+  def self.find_by_eval _eval_id
+    res = FRQuestion.where("evaluation_id = #{_eval_id}")
+    if res.length > 0
+        FRQuestion.find res[0].id
+    else
+        raise "No FRQ found"
+    end
+  end
 end

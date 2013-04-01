@@ -182,8 +182,14 @@ module MTurkUtils
     # Imports responses to the given Task as a TaskResult.
     def fetch_results task
       hit_id = task.mturk_hit
+      
+      Rails.logger.info("Hit for task: #{task} is #{hit_id}")
       return unless hit_id
+      
+      Rails.logger.info("fetching results for HIT: #{hit_id}")
       assignments = mturk_run{mturk(task.evaluation).getAssignmentsForHIT :HITId => hit_id}
+      Rails.logger.warn("Assignments for task #{task.id} => #{assignments}")
+
       # return if we don't have a response from a MTurk user
       if assignments.nil? or assignments[:Assignment].nil?
         Rails.logger.warn("[fetch_results] No responses for task #{task.id}")
@@ -191,6 +197,8 @@ module MTurkUtils
       end
 
       answers = Hash.from_xml(assignments[:Assignment][:Answer])["QuestionFormAnswers"]["Answer"]
+      Rails.logger.info("Response from MTurk for hit #{hit_id} => ")
+      Rails.logger.info("#{answers}")
 
       unless answers.kind_of? Array
         # If there's only one question, we get a single hash rather than a bunch
@@ -205,6 +213,7 @@ module MTurkUtils
       response = task.build_task_response
       response.m_turk_user = MTurkUser.find_or_create_by_id_and_prod worker_id, task.evaluation.prod
       response.work_duration = time
+      Rails.logger.warn("Response object #{response}")
 
       # import answer data
       answers.each do |answer|
@@ -223,6 +232,7 @@ module MTurkUtils
         answer_content = answer["FreeText"]
 
         if question_type == "fr"
+          Rails.logger.info("Processing  FR Response")
           # free-response question
           begin
             question = FRQuestion.find question_id.to_i
@@ -240,6 +250,7 @@ module MTurkUtils
           question_response.response = answer_content
           question_response.fr_question = question
         elsif question_type == "mc"
+          Rails.logger.info("Processing  MC Response")
           # multiple-choice question
           begin
             option = MCQuestionOption.find answer_content.to_i
@@ -252,6 +263,28 @@ module MTurkUtils
 
           question_response = response.mc_question_responses.build
           question_response.mc_question_option = option
+        else
+          # treat the response as a free response and store it
+          Rails.logger.info("New API does not have the expected question_type info. Treating this as free response")
+          if answer["QuestionIdentifier"] != "workerId"
+            begin
+              frq = FRQuestion.find_by_eval task.evaluation.id
+              Rails.logger.info("Got FRQ #{frq}")
+            rescue
+              Rails.logger.warn("[fetch_results] Could not find FRQuestion for this evaluation #{task.evaluation.id}")
+              next
+            end
+
+            question_response = response.fr_question_responses.build
+            if answer_content.blank?
+              answer_content = "Got no response"
+            end
+            
+            Rails.logger.info("Setting up response data for response #{question_response} => #{answer_content}")
+            question_response.response = answer_content
+            Rails.logger.info("Setting up question association for frq_response #{question_response} => #{frq}")
+            question_response.fr_question = frq
+          end
         end
       end
 
