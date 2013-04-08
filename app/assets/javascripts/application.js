@@ -29,3 +29,6 @@
 //= require lib/jquery.dataTables.min.js
 //= require_tree ./lib
 //= require_tree .
+$(document).ready(function() {
+	$('.datatable').dataTable();
+})

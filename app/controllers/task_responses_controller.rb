@@ -18,7 +18,7 @@ class TaskResponsesController < ApplicationController
   before_filter :find_response, :except => [:index, :responses_csv]
   before_filter :require_priv, :except => [:index, :responses_csv]
 
-  caches_action :index, :layout => false, :if => proc{request.format.html?}
+  # caches_action :index, :layout => false, :if => proc{request.format.html?}
 
   private
 
@@ -42,6 +42,10 @@ class TaskResponsesController < ApplicationController
       :fr_questions => [:fr_question_responses],
       :mc_questions => {:mc_question_options => [:mc_question_responses => [:mc_question_option]]}
     }).find(params[:evaluation_id])
+
+    #@indixResp = FRQuestion.includes([:fr_question_responses]).where(:evaluation_id=>@eval.id)
+
+
 
     @task_responses = @eval.task_responses
 
@@ -125,12 +129,30 @@ class TaskResponsesController < ApplicationController
       }
     end
 
+    frqs = FRQuestion.includes(:fr_question_responses=>[:task_response=>[:task]]).where(:evaluation_id => @eval.id)
+
+    report = {}
+
+    frqs.each do |frq|
+      report[frq.id] = {}
+      frq.fr_question_responses.each do |frqres|
+        if report[frq.id][frqres.task_response.task.id].blank?
+          report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data, :cwr_resp => frqres.response, :count=>1}
+        else
+          report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data, :cwr_resp => frqres.response, :count=>report[frq.id][frqres.task_response.task.id][:count]+=1}
+        end
+      end
+    end
+
+    
     @data = {
       :mcQuestions => mc_questions,
       :mcQuestionOptions => mc_question_options,
       :frQuestions => fr_questions,
-      :responses => responses
+      :responses => responses,
+      :indixResponse => report
     }
+
 
 
     respond_to do |format|

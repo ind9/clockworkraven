@@ -15,7 +15,7 @@
 %h1= @eval.name
 
 -# placeholder for bar chart
-.row-fluid.chart-container
+-#.row-fluid.chart-container
   .span12
     #bar_chart
     #average_value_wrapper
@@ -25,7 +25,7 @@
 
 
 -# Chart options
-.row-fluid
+-#.row-fluid
   .span4
     %h3 Chart:
     .chart-options
@@ -63,9 +63,9 @@
 
 -# Chart filters
 
-%h3 Filter By
+-#%h3 Filter By
 
-.row-fluid
+-#.row-fluid
   - @eval.mc_questions.each do |mc_q|
     .filter-pane
       %h5= mc_q.label
@@ -82,6 +82,39 @@
 %hr
 
 -# Response table
+
+%h4 Free Response
+%hr
+%table.table.table-striped.table-bordered.datatable.table-condensed
+  %thead
+    %tr
+      %th FRQ ID
+      %th Task ID
+      %th Title
+      %th BreadCrumb
+      %th Classifier Response
+      %th CWR Response
+      %th Count
+  %tbody
+    - @data[:indixResponse].each do |k,v|
+      - v.each do |vk,vv|
+        %tr
+          %td 
+            #{k}
+          %td
+            #{vk}
+          %td
+            #{vv[:data]['Title']}
+          %td
+            #{vv[:data]['Breadcrumb']}
+          %td
+            WIP
+          %td
+            #{vv[:cwr_resp]}
+          %td 
+            #{vv[:count]}
+        
+
 
 %h1.table-header All Responses
 
