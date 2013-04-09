@@ -147,9 +147,17 @@ class TaskResponsesController < ApplicationController
         retrieved.add(frqres.response)
       end
     end
-
-    @precision = ((relevant & retrieved).length / retrieved.length)
-    @recall = ((relevant & retrieved).length / relevant.length)
+    begin
+      @precision = ((relevant & retrieved).length / retrieved.length)
+    rescue
+      @precision = 0
+    end
+    begin
+      @recall = ((relevant & retrieved).length / relevant.length)  
+    rescue Exception => e
+      @recall = 0 
+    end
+    
 
     
     @data = {
