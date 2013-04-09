@@ -15,7 +15,7 @@
 %h1= @eval.name
 
 -# placeholder for bar chart
--#.row-fluid.chart-container
+.row-fluid.chart-container
   .span12
     #bar_chart
     #average_value_wrapper
@@ -25,7 +25,7 @@
 
 
 -# Chart options
--#.row-fluid
+.row-fluid
   .span4
     %h3 Chart:
     .chart-options
@@ -63,9 +63,9 @@
 
 -# Chart filters
 
--#%h3 Filter By
+%h3 Filter By
 
--#.row-fluid
+.row-fluid
   - @eval.mc_questions.each do |mc_q|
     .filter-pane
       %h5= mc_q.label
@@ -83,9 +83,9 @@
 
 -# Response table
 
-%h4 Free Response
+%h4 Free Response Questions
 %hr
-%table.table.table-striped.table-bordered.datatable.table-condensed
+%table.table.table-striped.table-bordered.datatable.table-condensed#reports
   %thead
     %tr
       %th FRQ ID
