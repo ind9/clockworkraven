@@ -129,6 +129,8 @@ class TaskResponsesController < ApplicationController
       }
     end
 
+    relevant = Set.new
+    retrieved = Set.new
     frqs = FRQuestion.includes(:fr_question_responses=>[:task_response=>[:task]]).where(:evaluation_id => @eval.id)
 
     report = {}
@@ -141,8 +143,13 @@ class TaskResponsesController < ApplicationController
         else
           report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data, :cwr_resp => frqres.response, :count=>report[frq.id][frqres.task_response.task.id][:count]+=1}
         end
+        relevant.add(frqres.task_response.task.data['response'])
+        retrieved.add(frqres.response)
       end
     end
+
+    @precision = ((relevant & retrieved).length / retrieved.length)
+    @recall = ((relevant & retrieved).length / relevant.length)
 
     
     @data = {
