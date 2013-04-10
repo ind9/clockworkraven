@@ -91,35 +91,57 @@
       %th FRQ ID
       %th Task ID
       %th Title
-      %th BreadCrumb
       %th Classifier Response
       %th CWR Response
-      %th Count
   %tbody
     - @data[:indixResponse].each do |k,v|
       - v.each do |vk,vv|
-        %tr
-          %td 
-            #{k}
-          %td
-            #{vk}
-          %td
-            #{vv[:data]['Title']}
-          %td
-            #{vv[:data]['Breadcrumb']}
-          %td
-            WIP
-          %td
-            #{vv[:cwr_resp]}
-          %td 
-            #{vv[:count]}
-        
-%hr
-  %p
-    Precision : #{@precision}
-  %p
-    Recall : #{@recall}
+        -vv[:data].each do |dv|
+          %tr
+            %td 
+              #{k}
+            %td
+              #{vk}
+            %td
+              #{dv['Title']}
+            %td
+              #{dv['ClassifierResult']}
+            %td
+              #{dv['cwr_resp']}
 
+%hr
+%h4 Precision & Recall
+%hr
+%table.table.table-striped.table-bordered.table-condensed
+  %thead
+    %tr
+      %th Category
+      %th True Positive
+      %th False Positive
+      %th Fasle Negative
+      %th Precision
+      %th Recall
+  %tbody
+    - @data[:precisionRecall].each do |k,v|
+      %tr
+        %td
+          #{k}
+        %td
+          #{v[:tp]}
+        %td
+          #{v[:fp]}
+        %td
+          #{v[:fn]}
+        %td
+          -begin
+            #{v[:tp]/v[:tp]+v[:fp]}
+          -rescue
+            0
+        %td
+          -begin
+            #{v[:tp]/v[:tp]+v[:fn]}
+          -rescue
+            0
 
 %h1.table-header All Responses
 

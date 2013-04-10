@@ -148,6 +148,9 @@ class Evaluation < ActiveRecord::Base
   # Task's "data" property.
   def add_data(data,split)
     data.each_slice(split) do |item|
+      item.each do |i|
+        i['id'] = Digest::SHA1.hexdigest(i['URL'])
+      end      
       task = self.tasks.build :data => item
       task.save!
     end

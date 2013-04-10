@@ -18,13 +18,26 @@
         %td
           %select.chzn-select{"data-placeholder" => "Choose categories as applicable (in the order of relevance)",  :style => "width:350px;", :tabindex => "4", :id => "categories_#{i}", :name =>"categories_#{i}"}
             %option{:value => ""}
-            %option{:value => "Apparel"} Apparel
-            %option{:value => "Shoes"} Shoes
-            %option{:value => "Jewelry"} Jewelry
-            %option{:value => "Electronics"} Electronics
-            %option{:value => "Home"} Home
-            %option{:value => "Baby Essentials"} Baby Essentials
-            %option{:value => "Home Improvements"} Home Improvements
-            %option{:value => "Home Improvements"} Office Supplies
-            %option{:value => "Others"} Others
-
+            %option{:value => "#{data['id']}_Apparel"} Apparel
+            %option{:value => "#{data['id']}_Jewelry"} Jewelry
+            %option{:value => "#{data['id']}_Shoes & Accessories"} Shoes & Accessories
+            %option{:value => "#{data['id']}_Home"} Home
+            %option{:value => "#{data['id']}_Electronics"} Electronics
+            %option{:value => "#{data['id']}_Grocery, Health & Personal Care"} Grocery, Health & Personal Care
+            %option{:value => "#{data['id']}_Baby Essentials"} Baby Essentials
+            %option{:value => "#{data['id']}_Home Improvement"} Home Improvement
+            %option{:value => "#{data['id']}_Toys & Games"} Toys & Games
+            %option{:value => "#{data['id']}_Software"} Software
+            %option{:value => "#{data['id']}_Industrial & Scientific"} Industrial & Scientific
+            %option{:value => "#{data['id']}_Computers"} Computers
+            %option{:value => "#{data['id']}_Office & School Supplies"} Office & School Supplies
+            %option{:value => "#{data['id']}_Sports & Outdoors"} Sports & Outdoors
+            %option{:value => "#{data['id']}_Books"} Books
+            %option{:value => "#{data['id']}_Music & Movies"} Music & Movies
+            %option{:value => "#{data['id']}_Automotive"} Automotive
+            %option{:value => "#{data['id']}_Patio, Lawn & Garden"} Patio, Lawn & Garden
+            %option{:value => "#{data['id']}_Pet Supplies"} Pet Supplies
+            %option{:value => "#{data['id']}_Arts, Crafts & Sewing"} Arts, Crafts & Sewing
+            %option{:value => "#{data['id']}_Musical Instruments"} Musical Instruments
+            %option{:value => "#{data['id']}_Video Games"} Video Games
+            %option{:value => "#{data['id']}_Others"} Others

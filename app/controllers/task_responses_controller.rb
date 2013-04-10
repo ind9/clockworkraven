@@ -129,43 +129,42 @@ class TaskResponsesController < ApplicationController
       }
     end
 
-    relevant = Set.new
-    retrieved = Set.new
     frqs = FRQuestion.includes(:fr_question_responses=>[:task_response=>[:task]]).where(:evaluation_id => @eval.id)
 
     report = {}
+    pr={}
 
     frqs.each do |frq|
       report[frq.id] = {}
-      frq.fr_question_responses.each do |frqres|
-        if report[frq.id][frqres.task_response.task.id].blank?
-          report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data, :cwr_resp => frqres.response, :count=>1}
-        else
-          report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data, :cwr_resp => frqres.response, :count=>report[frq.id][frqres.task_response.task.id][:count]+=1}
+      frq.fr_question_responses.each do |frqres| # 30 items
+        frqres.task_response.task.data.each do |entry| # 5 items
+          if entry['id'] == frqres.response.split('_').first
+            entry['cwr_resp'] = frqres.response.split('_').second
+
+            if pr[entry['cwr_resp']].blank?
+              pr[entry['cwr_resp']] = {:tp=>0,:fp=>0,:fn=>0}
+            end
+
+            if entry['ClassifierResult'] == entry['cwr_resp']
+              pr[entry['cwr_resp']][:tp] += 1
+            elsif entry['ClassifierResult'] != entry['cwr_resp'] and entry['ClassifierResult'] != "null"
+              pr[entry['cwr_resp']][:fp] += 1
+            else
+              pr[entry['cwr_resp']][:fn] += 1
+            end                
+          end
         end
-        relevant.add(frqres.task_response.task.data['response'])
-        retrieved.add(frqres.response)
+        report[frq.id][frqres.task_response.task.id] = {:data => frqres.task_response.task.data}
       end
     end
-    begin
-      @precision = ((relevant & retrieved).length / retrieved.length)
-    rescue
-      @precision = 0
-    end
-    begin
-      @recall = ((relevant & retrieved).length / relevant.length)  
-    rescue Exception => e
-      @recall = 0 
-    end
-    
-
     
     @data = {
       :mcQuestions => mc_questions,
       :mcQuestionOptions => mc_question_options,
       :frQuestions => fr_questions,
       :responses => responses,
-      :indixResponse => report
+      :indixResponse => report,
+      :precisionRecall => pr
     }
 
 
