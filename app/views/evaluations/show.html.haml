@@ -130,7 +130,7 @@
           %li
             = link_to 'TSV', evaluation_task_responses_path(@evaluation, :format => 'tsv')
             = link_to 'CSV', evaluation_task_responses_path(@evaluation, :format => 'csv')
-            = link_to 'JSON', evaluation_task_responses_path(@evaluation, :format => 'json')
+            -#= link_to 'JSON', evaluation_task_responses_path(@evaluation, :format => 'json')
 
     - if @evaluation.status_name == :closed
       = link_to 'Approve All Unapproved Responses', approve_all_evaluation_path(@evaluation),

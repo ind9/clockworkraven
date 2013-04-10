@@ -206,7 +206,7 @@ class TaskResponsesController < ApplicationController
       orig_fields_keys = if @task_responses.empty? 
                            []
                          else 
-                           @task_responses.first.task.data.keys
+                           @task_responses.first.task.data.first.keys
                          end
 
       # As a slightly hacky way of dealing with metadata, Clockwork Raven stores
@@ -221,32 +221,42 @@ class TaskResponsesController < ApplicationController
              ["MTurk User", "Work Duration", "Approval"]
 
       @task_responses.each do |task_response|
-        # build the row
-        row = []
+        task_response.task.data.each do |d|
+          # build the row
+          row = []
 
-        # Fields from the original data file.
-        orig_fields_keys.each do |k|
-          row.push(task_response.task.data[k])
+          # Fields from the original data file.
+          orig_fields_keys.each do |k|
+            row.push(d[k])
+          end
+
+
+          # MC Questions
+          # real_mc_questions.each do |mc_q|
+          #   option_id = @data[:responses][task_response.id][:mcQuestions][mc_q.id]
+          #   mc_q_resp = option_id.nil? ? nil : @data[:mcQuestionOptions][option_id][:label]
+          #   row.push(mc_q_resp.nil? ? nil : mc_q_resp)
+          # end
+
+          # FR Questions
+          @eval.fr_questions.each do |fr_q|
+            print task_response.task.id
+            @data[:indixResponse][fr_q.id][task_response.task.id][:data].each do |q|
+              if d['id'] == q['id']
+                fr_q_resp = q['cwr_resp']  
+                row.push(fr_q_resp.nil? ? nil : fr_q_resp)
+              end
+            end
+            # fr_q_resp = @data[:responses][task_response.id][:frQuestions][fr_q.id]
+            
+          end
+
+          row.push(task_response.m_turk_user_id)
+          row.push(task_response.work_duration)
+          row.push(task_response.approved)
+
+          csv << row
         end
-
-        # MC Questions
-        real_mc_questions.each do |mc_q|
-          option_id = @data[:responses][task_response.id][:mcQuestions][mc_q.id]
-          mc_q_resp = option_id.nil? ? nil : @data[:mcQuestionOptions][option_id][:label]
-          row.push(mc_q_resp.nil? ? nil : mc_q_resp)
-        end
-
-        # FR Questions
-        @eval.fr_questions.each do |fr_q|
-          fr_q_resp = @data[:responses][task_response.id][:frQuestions][fr_q.id]
-          row.push(fr_q_resp.nil? ? nil : fr_q_resp)
-        end
-
-        row.push(task_response.m_turk_user_id)
-        row.push(task_response.work_duration)
-        row.push(task_response.approved)
-
-        csv << row
       end
     end
   end
