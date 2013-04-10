@@ -45,7 +45,8 @@
       - when :_header
         %h1= interpolate(section[:content], @task.data)
       - else
-        = render :partial => "components/#{section[:type]}", :locals => {:data => resolve_data(section[:data], @task.data)}
+        / = render :partial => "components/#{section[:type]}", :locals => {:data => resolve_data(section[:data], @task.data)}
+        = render :partial => "components/#{section[:type]}", :locals => {:data_all => @task.data}
 
   %input.btn.btn-primary{:type => 'submit', :value => 'FinishTask', :id => 'submitButton'}
 

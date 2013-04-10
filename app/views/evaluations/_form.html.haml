@@ -74,6 +74,14 @@
     .controls
       = f.file_field :data
 
+  .control-group
+    %label.control-label{:for => 'evaluation_data_split'}
+      Data Split
+      %br
+      %span.label-help No of splits per task
+    .controls
+      = f.text_field :data_split, :value=>5
+
   - unless @evaluation.new_record?
     .control-group
       %label.control-label{:for => 'evaluation_replace_data'}

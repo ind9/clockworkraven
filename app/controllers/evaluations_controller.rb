@@ -113,7 +113,8 @@ class EvaluationsController < ApplicationController
         success = @evaluation.save
 
         if success and data
-          @evaluation.add_data data
+          split = if params[:evaluation][:data_split].to_i == 0 then 5 else params[:evaluation][:data_split].to_i end
+          @evaluation.add_data(data,split)
         end
       end
     end
@@ -153,7 +154,8 @@ class EvaluationsController < ApplicationController
         end
 
         if data
-          @evaluation.add_data data
+          split = if params[:evaluation][:data_split].to_i == 0 then 5 else params[:evaluation][:data_split].to_i end
+          @evaluation.add_data(data,split)
         end
 
         success = @evaluation.save
@@ -215,7 +217,7 @@ class EvaluationsController < ApplicationController
   # GET /evaluations/1/edit_template
   def edit_template
     if @evaluation.tasks.size > 0
-      @fields = @evaluation.tasks.first.data.keys
+      @fields = @evaluation.tasks.first.data[0].keys
     else
       @fields = []
     end
@@ -226,7 +228,7 @@ class EvaluationsController < ApplicationController
     params[:evaluation] ||= {}
 
     if @evaluation.tasks.size > 0
-      @fields = @evaluation.tasks.first.data.keys
+      @fields = @evaluation.tasks.first.data[0].keys
     else
       @fields = []
     end

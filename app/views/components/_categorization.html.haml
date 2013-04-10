@@ -2,31 +2,29 @@
   %link{:href => "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/css/bootstrap.css", :rel => "stylesheet"}
   %link{:href => "//cdnjs.cloudflare.com/ajax/libs/chosen/0.9.12/chosen.css", :rel => "stylesheet"}
 
-%h3 Help us categorize the below product:
-- unless data['Title'].blank?
-  %p
-    Product Title
-    %a{:target => '_blank', :href => data['URL']}
-      #{data['Title']}
+%h3 Help us categorize the below products:
+%table.table.table-striped
+  %thead
+    %tr
+      %th Product Title
+      %th Categories
+  %tbody
+    -data_all.each_with_index do |data,i|
+      %tr
+        %td
+          - unless data['Title'].blank?
+            %a{:target => '_blank', :href => data['URL'], :name=>"url_#{i}"}
+              #{data['Title']}
+        %td
+          %select.chzn-select{"data-placeholder" => "Choose categories as applicable (in the order of relevance)",  :style => "width:350px;", :tabindex => "4", :id => "categories_#{i}", :name =>"categories_#{i}"}
+            %option{:value => ""}
+            %option{:value => "Apparel"} Apparel
+            %option{:value => "Shoes"} Shoes
+            %option{:value => "Jewelry"} Jewelry
+            %option{:value => "Electronics"} Electronics
+            %option{:value => "Home"} Home
+            %option{:value => "Baby Essentials"} Baby Essentials
+            %option{:value => "Home Improvements"} Home Improvements
+            %option{:value => "Home Improvements"} Office Supplies
+            %option{:value => "Others"} Others
 
-%div      
-  %em Categories
-  %br/
-  %select.chzn-select{"data-placeholder" => "Choose categories as applicable (in the order of relevance)", :multiple => "", :style => "width:350px;", :tabindex => "4", :id => 'categories', :name => 'categories'}
-    %option{:value => ""}
-    %option{:value => "Apparel"} Apparel
-    %option{:value => "Shoes"} Shoes
-    %option{:value => "Jewelry"} Jewelry
-    %option{:value => "Electronics"} Electronics
-    %option{:value => "Home"} Home
-    %option{:value => "Baby Essentials"} Baby Essentials
-    %option{:value => "Home Improvements"} Home Improvements
-    %option{:value => "Home Improvements"} Office Supplies
-    %option{:value => "Others"} Others
-    
-  #product-page
-    %iframe{:height => "750px", :src => data['URL'], :width => "100%"}
-
-%script{:type => 'text/javascript'}
-  $(".chzn-select").chosen();
-  $(".chzn-select-deselect").chosen({allow_single_deselect:true});

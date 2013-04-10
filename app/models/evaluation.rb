@@ -146,8 +146,8 @@ class Evaluation < ActiveRecord::Base
   #
   # Each element of the array should be a Hash. That Hash will be stored in the
   # Task's "data" property.
-  def add_data data
-    data.each do |item|
+  def add_data(data,split)
+    data.each_slice(split) do |item|
       task = self.tasks.build :data => item
       task.save!
     end

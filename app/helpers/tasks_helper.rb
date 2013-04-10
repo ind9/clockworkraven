@@ -25,17 +25,21 @@ module TasksHelper
   # resolves data items, which can be literals, fields, or nils, to the
   # appropriate string. Fields are looked up in the fields hash
   def resolve_data data, fields
+    response = []
     resolved = {}
-    data.each do |key, item|
-      case item[:value]
-      when '_literal'
-        resolved[key] = item[:literal]
-      when '_nil'
-        resolved[key] = nil
-      else
-        resolved[key] = fields[item[:value]]
+    data.each do |in_data|
+      in_data.each do |key, item|
+        case item[:value]
+        when '_literal'
+          resolved[key] = item[:literal]
+        when '_nil'
+          resolved[key] = nil
+        else
+          resolved[key] = fields[item[:value]]
+        end
       end
+      response.add(resolved)
     end
-    resolved
+    response
   end
 end
