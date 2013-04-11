@@ -240,11 +240,12 @@ class TaskResponsesController < ApplicationController
 
           # FR Questions
           @eval.fr_questions.each do |fr_q|
-            print task_response.task.id
-            @data[:indixResponse][fr_q.id][task_response.task.id][:data].each do |q|
-              if d['id'] == q['id']
-                fr_q_resp = q['cwr_resp']  
-                row.push(fr_q_resp.nil? ? nil : fr_q_resp)
+            unless @data[:indixResponse][fr_q.id].blank?
+              @data[:indixResponse][fr_q.id][task_response.task.id][:data].each do |q|
+                if d['id'] == q['id']
+                  fr_q_resp = q['cwr_resp']  
+                  row.push(fr_q_resp.nil? ? nil : fr_q_resp)
+                end
               end
             end
             # fr_q_resp = @data[:responses][task_response.id][:frQuestions][fr_q.id]
